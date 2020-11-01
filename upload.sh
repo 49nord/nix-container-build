@@ -39,8 +39,8 @@ if [ -z ${INPUT_TAG} ]; then
     TAG=latest
   fi;
 
-  # Otherwise we cut off the first two /-delimited fields, which we expect to be "refs/heads/".
-  TAG=$(echo ${GITHUB_REF} | cut -d '/' -f 3-)
+  # Otherwise we use the last /-delimited field, which we expect to be the tag or branch.
+  TAG=$(echo ${GITHUB_REF} | grep -oe '[^/]*$')
 
   echo "Ref ${GITHUB_REF} parsed to tag ${TAG}"
 else
