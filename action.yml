@@ -1,0 +1,33 @@
+name: "Build and push nix-based contaienr image"
+description: "Builds a nix-expression into a docker image, optionally pushing it to a registry."
+branding:
+  color: purple
+  icon: gift
+inputs:
+  src:
+    description: "The nix-expression to build that will result in a docker image"
+    required: true
+    default: "docker.nix"
+  registry:
+    description: "The docker registry to upload to, e.g. `registry.example.com`"
+    required: false
+  path:
+    description: "The path on the registry to upload to, e.g. `/main-project/example-service`"
+    required: false
+  username:
+    description: "Username to authenticate to registry with"
+    required: false
+  password:
+    description: "Password to authenticate to registry with"
+    required: false
+  tag:
+    description: "Tag to use for the uploaded image. If not given, determine automatically. `main` and `master` are always translated to the tag `latest`; otherwise versions"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: "Build the docker-image"
+      shell: sh
+      run: nix-build --out-link /tmp/nix-container-build ${{ inputs.src }}
+    - name: "Upload image to registry"
+      run: nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/3590f02e7d5760e52072c1a729ee2250b5560746.tar.gz -p skopeo --run "${{ github.action_path }}/upload.sh"
