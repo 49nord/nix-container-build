@@ -3,8 +3,7 @@
 set -e
 
 # We need to set the auth file location, otherwise skopeo will attempt to write to /run/containers.
-# mktemp ensures we set restrictive permissions.
-export REGISTRY_AUTH_FILE=$(mktemp --suffix=.json)
+export REGISTRY_AUTH_FILE=/tmp/skopeo-auth.json
 
 # Ensure we have a registry and credentials.
 if [ -z ${REGISTRY} ]; then
