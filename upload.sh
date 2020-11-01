@@ -3,22 +3,22 @@
 set -e
 
 # Ensure we have a registry and credentials.
-if [ -z ${INPUT_REGISTRY} ]; then
+if [ -z ${REGISTRY} ]; then
   echo 'Not uploading, `registry` is not set.'
   exit 0
 fi
 
-if [ -z ${INPUT_USERNAME} ]; then
+if [ -z ${USERNAME} ]; then
   echo 'Cannot upload, `username` is not set.'
   exit 1
 fi;
 
-if [ -z ${INPUT_PASSWORD} ]; then
+if [ -z ${PASSWORD} ]; then
   echo 'Cannot upload, `password` is not set.'
   exit 1
 fi;
 
-if [ -z ${INPUT_PATH} ]; then
+if [ -z ${REPO_PATH} ]; then
   echo 'Cannot upload, `path` is not set.'
   exit 1
 fi;
@@ -44,14 +44,14 @@ else
   TAG=${INPUT_TAG}
 fi;
 
-TARGET="${INPUT_REGISTRY}/${INPUT_PATH}:${TAG}"
+TARGET="${REGISTRY}/${REPO_PATH}:${TAG}"
 IMAGE=$(readlink -f /tmp/nix-container-build)
 
-echo "Logging in to ${INPUT_REGISTRY}"
-skopeo login --username "${INPUT_USERNAME}" --password "${INPUT_PASSWORD}" ${INPUT_REGISTRY}
+echo "Logging in to ${REGISTRY}"
+skopeo login --username "${USERNAME}" --password "${PASSWORD}" ${REGISTRY}
 
 echo "Uploading ${IMAGE} to ${TARGET}"
 echo skopeo --insecure-policy copy "docker-archive://${IMAGE}" "docker://${TARGET}"
 
 # Log back out to at least not have credentials floating around on the filesystem.
-skopeo logout ${INPUT_REGISTRY}
+skopeo logout ${REGISTRY}

@@ -32,3 +32,10 @@ runs:
     - name: "Upload image to registry"
       shell: sh
       run: nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/3590f02e7d5760e52072c1a729ee2250b5560746.tar.gz -p skopeo --run "${{ github.action_path }}/upload.sh"
+      env:
+        REGISTRY: ${{ inputs.registry }}
+        USERNAME: ${{ inputs.username }}
+        PASSWORD: ${{ inputs.password }}
+        REPO_PATH: ${{ inputs.path }}
+        INPUT_TAG: ${{ inputs.tag }}
+        GITHUB_REF: ${{ github.ref }}
