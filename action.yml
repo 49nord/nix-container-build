@@ -30,4 +30,5 @@ runs:
       shell: sh
       run: nix-build --out-link /tmp/nix-container-build ${{ inputs.src }}
     - name: "Upload image to registry"
+      shell: sh
       run: nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/3590f02e7d5760e52072c1a729ee2250b5560746.tar.gz -p skopeo --run "${{ github.action_path }}/upload.sh"
