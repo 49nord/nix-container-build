@@ -2,6 +2,10 @@
 
 set -e
 
+# We need to set the auth file location, otherwise skopeo will attempt to write to /run/containers.
+# mktemp ensures we set restrictive permissions.
+export REGISTRY_AUTH_FILE=$(mktemp --suffix=.json)
+
 # Ensure we have a registry and credentials.
 if [ -z ${REGISTRY} ]; then
   echo 'Not uploading, `registry` is not set.'
