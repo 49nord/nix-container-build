@@ -20,6 +20,6 @@ jobs:
         with:
           registry: registry.example.com
           user: ci-user
-          password: ${{ secrets.registry-password }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
           path: myproject/myapplication
 ```
