@@ -37,7 +37,7 @@ if [ -z ${INPUT_TAG} ]; then
   fi;
 
   # Otherwise we cut off the first two /-delimited fields, which we expect to be "refs/heads/".
-  TAG=$(echo ${GITHUB_REF} | cut -d '/' -f 3)
+  TAG=$(echo ${GITHUB_REF} | cut -d '/' -f 3-)
 
   echo "Ref ${GITHUB_REF} parsed to tag ${TAG}"
 else
