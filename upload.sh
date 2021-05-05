@@ -54,7 +54,7 @@ echo "Logging in to ${REGISTRY}"
 skopeo login --username "${USERNAME}" --password "${PASSWORD}" ${REGISTRY}
 
 echo "Uploading ${IMAGE} to ${TARGET}"
-echo skopeo --insecure-policy copy "docker-archive://${IMAGE}" "docker://${TARGET}"
+skopeo --insecure-policy copy "docker-archive://${IMAGE}" "docker://${TARGET}"
 
 # Log back out to at least not have credentials floating around on the filesystem.
 skopeo logout ${REGISTRY}
