@@ -27,7 +27,7 @@ if [ -z ${REPO_PATH} ]; then
 fi;
 
 if [ -z ${INPUT_TAG} ]; then
-  echo "`tag` is not set, determining automatically."
+  echo "tag is not set, determining automatically."
   if [ -z ${GITHUB_REF} ]; then
     echo "{{github.ref}} is not set; cannot automatically determine a tag."
     exit 1
@@ -37,10 +37,10 @@ if [ -z ${INPUT_TAG} ]; then
     TAG=latest
   elif [ ${GITHUB_REF} = "refs/heads/master" ]; then
     TAG=latest
+  else
+    # Otherwise we use the last /-delimited field, which we expect to be the tag or branch.
+    TAG=$(echo ${GITHUB_REF} | grep -oe '[^/]*$')
   fi;
-
-  # Otherwise we use the last /-delimited field, which we expect to be the tag or branch.
-  TAG=$(echo ${GITHUB_REF} | grep -oe '[^/]*$')
 
   echo "Ref ${GITHUB_REF} parsed to tag ${TAG}"
 else
