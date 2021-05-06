@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: cachix/install-nix-action@v10
       - uses: actions/checkout@v2
-      - uses: 49nord/nix-container-build@v1
+      - uses: 49nord/nix-container-build@v3
         with:
           registry: registry.example.com
           user: ci-user
