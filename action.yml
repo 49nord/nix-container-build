@@ -23,6 +23,10 @@ inputs:
   tag:
     description: "Tag to use for the uploaded image. If not given, determine automatically. `main` and `master` are always translated to the tag `latest`; otherwise versions"
     required: false
+  nixpkgs:
+    description: "Path to the version of nixpkgs used for the upload. Anything that can be used with the `-I` option of `nix-shell`. Default is the `21.11` tag of nixpkgs."
+    required: false
+    default: "https://github.com/NixOS/nixpkgs/archive/refs/tags/21.11.tar.gz"
 runs:
   using: "composite"
   steps:
@@ -31,7 +35,7 @@ runs:
       run: nix-build --out-link /tmp/nix-container-build ${{ inputs.src }}
     - name: "Upload image to registry"
       shell: sh
-      run: nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/3590f02e7d5760e52072c1a729ee2250b5560746.tar.gz -p skopeo --run "${{ github.action_path }}/upload.sh"
+      run: nix-shell -I nixpkgs="${{ inputs.nixpkgs }}" -p skopeo --run "${{ github.action_path }}/upload.sh"
       env:
         REGISTRY: ${{ inputs.registry }}
         USERNAME: ${{ inputs.username }}
