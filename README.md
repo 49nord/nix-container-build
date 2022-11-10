@@ -9,17 +9,21 @@ The resulting image is pushed to `registry/path:tag`, where `registry` must be a
 ## Example
 
 ```yaml
+name: Build and publish container image
+on: [push]
 jobs:
   build:
     name: Build and push application image
     runs-on: ubuntu-latest
     steps:
       - uses: cachix/install-nix-action@v16
+        with:
+          nix_path: nixpkgs=channel:nixos-22.04
       - uses: actions/checkout@v2
       - uses: 49nord/nix-container-build@v4
         with:
           registry: registry.example.com
-          user: ci-user
+          username: ci-user
           password: ${{ secrets.REGISTRY_PASSWORD }}
           path: myproject/myapplication
 ```
