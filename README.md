@@ -8,6 +8,8 @@ The resulting image is pushed to `registry/path:tag`, where `registry` must be a
 
 ## Example
 
+The example below uploads to the GitHub container registry ([ghcr.io](https://ghcr.io)). You will need to create a legacy access token (ideally restricted to only uploading packages, see the [official documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry) for details) and set your username/token as action secrets `REGISTRY_USERNAME` and `REGISTRY_PASSWORD`, respectively.
+
 ```yaml
 name: Build and publish container image
 on: [push]
@@ -22,8 +24,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: 49nord/nix-container-build@v4
         with:
-          registry: registry.example.com
-          username: ci-user
+          registry: ghcr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-          path: myproject/myapplication
+          path: ${{ secrets.REGISTRY_USERNAME }}/myapplication
 ```
